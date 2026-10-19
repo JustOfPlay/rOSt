@@ -1,16 +1,13 @@
 #![no_std]
 #![no_main]
- 
-use core::panic::{PanicInfo};
 
+use core::panic::PanicInfo;
 
 core::arch::global_asm!(include_str!("boot.s"));
-
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() -> ! {
     hello_world();
-
 
     loop {
         unsafe {
@@ -18,9 +15,6 @@ pub extern "C" fn kernel_main() -> ! {
         }
     }
 }
-
-
-
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
@@ -32,10 +26,11 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
+
 mod vga {
-    pub fn print_to_vga(_string:&str) {
+    pub fn print_to_vga(_string: &str) {
         let vga = 0xb8000 as *mut u8;
-        
+
         for (i, byte) in _string.bytes().enumerate() {
             unsafe {
                 vga.add(i * 2).write_volatile(byte);
@@ -46,7 +41,7 @@ mod vga {
 
     pub fn clear_screen() {
         let vga = 0xb8000 as *mut u8;
-        
+
         for i in 0..(80 * 25) {
             unsafe {
                 vga.add(i * 2).write_volatile(b' ');
