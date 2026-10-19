@@ -1,0 +1,12 @@
+[workspace]
+resolver = "2"
+members = []
+
+
+[workspace.lints.clippy]
+all = "warn"
+pedantic = "warn"
+nursery = "warn"
+
+[workspace.lints.rust]
+unsafe_code = "deny"
