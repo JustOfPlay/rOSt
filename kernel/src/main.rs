@@ -10,6 +10,8 @@ core::arch::global_asm!(include_str!("boot.s"));
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() -> ! {
     hello_world();
+
+
     loop {
         unsafe {
             core::arch::asm!("cli; hlt");
@@ -56,5 +58,5 @@ mod vga {
 
 fn hello_world() {
     vga::clear_screen();
-    vga::print_to_vga("Hello World");
+    vga::print_to_vga("Hello World!");
 }
