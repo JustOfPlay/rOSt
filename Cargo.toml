@@ -8,5 +8,6 @@ all = "warn"
 pedantic = "warn"
 nursery = "warn"
 
-[workspace.lints.rust]
-unsafe_code = "deny"
+[profile.release]
+panic = "abort"
+strip = false
