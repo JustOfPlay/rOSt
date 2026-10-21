@@ -14,7 +14,7 @@ if [[ ! -f "$KERNEL" ]]; then
 fi
 
 if ! grub-file --is-x86-multiboot2 "$KERNEL"; then
-    echo "Fehler: Ungültiger Multiboot2-Kernel: $KERNEL"
+    echo "Error: Invalid Multiboot2-Kernel: $KERNEL"
     exit 1
 fi
 
