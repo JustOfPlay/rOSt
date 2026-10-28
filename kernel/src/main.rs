@@ -6,7 +6,9 @@ pub mod arch;
 
 use core::{panic::PanicInfo};
 
-use rlib::format;
+use rlib::{format, string};
+
+use crate::{arch::x86_64::io::outb, drivers::keyboard::scancode::ScancodeDecoder, vga::print_to_vga};
 
 core::arch::global_asm!(include_str!("boot.s"));
 
@@ -14,14 +16,26 @@ core::arch::global_asm!(include_str!("boot.s"));
 pub extern "C" fn kernel_main() -> ! {
     //hello_world();
     
-    panic!("Test BSOD");
-    /*
+    //panic!("Test BSOD");
+
+    vga::clear_screen();
+    
+    let mut decoder = ScancodeDecoder::new();
     loop {
-        unsafe {
-            core::arch::asm!("cli; hlt");
+        if let Some(scancode) = drivers::keyboard::ps2::read_scancode() {
+            if scancode == 0x0E {
+                panic!("Triggered Test BSOD!");
+            }
+            match decoder.decode(scancode) {
+                Some(e) => {
+                    vga::clear_screen();
+                    vga::print_to_vga(format!("{} - {}",e.key,e.state).as_str());
+                },
+                None => {}
+            }
+
         }
     }
-    */
 }
 
 
